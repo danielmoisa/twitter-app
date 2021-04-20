@@ -1,13 +1,12 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import { prisma } from "../index";
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 // Register user
 router.post("/register", async (req, res) => {
-	const { username, email, password } = req.body;
+	const { username, name, email, password } = req.body;
 	try {
 		// Encrypt password
 		const salt = await bcrypt.genSalt(10);
@@ -17,6 +16,7 @@ router.post("/register", async (req, res) => {
 		const user = await prisma.user.create({
 			data: {
 				username,
+				name,
 				email,
 				password: hashedPassword,
 			},

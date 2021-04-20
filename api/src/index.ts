@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
+import { PrismaClient } from "@prisma/client";
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
 import tweetRouter from "./routes/tweets";
@@ -9,6 +10,7 @@ import tweetRouter from "./routes/tweets";
 // Init
 dotenv.config();
 const app = express();
+export const prisma = new PrismaClient();
 
 // Middleware
 app.use(express.json());

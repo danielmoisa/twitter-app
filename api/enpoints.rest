@@ -2,17 +2,19 @@ POST http://localhost:4000/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "Test User 5",
-    "email": "test5@test.com",
+    "username": "Test User 55",
+    "email": "test1121@test.com",
     "password": "admin1234",
     "isAdmin": false
 }
 
 ###
 
-POST http://localhost:4000/api/auth/login HTTP/1.1
+POST http://localhost:4000/api/tweets HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test3@test.com"
+    "description": "Lorem dolores descritption asdasdas sadasd dolores descritption asdasdas sadasd dolores descritption asdasdas sadasd",
+    "img": "https://picsum.photos/200",
+    "userId": 1
 }

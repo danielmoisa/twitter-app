@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import express from "express";
 import bcrypt from "bcrypt";
+import { prisma } from "../index";
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 // Get a user
@@ -18,10 +17,10 @@ router.get("/:id", async (req, res) => {
 				createdAt: true,
 				desc: true,
 				email: true,
-				from: true,
 				id: true,
 				profilePicture: true,
 				username: true,
+				name: true,
 			},
 		});
 		res.status(200).json(user);

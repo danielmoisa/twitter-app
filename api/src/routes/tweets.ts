@@ -1,7 +1,6 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../index";
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 // Create a tweet
@@ -120,22 +119,27 @@ router.get("/:id", async (req, res) => {
 });
 
 // Get feed tweets
-router.get("/feed", async (req, res) => {
-	const { userId } = req.body;
-	const feed = [];
+router.get("/", async (req, res) => {
+	// const { userId } = req.body;
 	try {
-		const usertweets = await prisma.tweet.findMany({
-			where: {
-				userId: userId,
+		// const usertweets = await prisma.tweet.findMany({
+		// 	where: {
+		// 		userId: userId,
+		// 	},
+		// });
+
+		// const currentUser = await prisma.user.findUnique({
+		// 	where: { id: userId },
+		// 	include: { following: true },
+		// });
+
+		const feed = await prisma.tweet.findMany({
+			include: {
+				User: true,
 			},
 		});
 
-		const currentUser = await prisma.user.findUnique({
-			where: { id: userId },
-			include: { following: true },
-		});
-
-		res.status(200).json(usertweets);
+		res.status(200).json(feed);
 	} catch (error) {
 		res.status(500).json(error);
 	}

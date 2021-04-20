@@ -16,10 +16,10 @@ model User {
   updatedAt      DateTime @updatedAt
   email          String   @unique
   username       String   @unique
+  name           String
   password       String
   desc           String?
   city           String?
-  from           String?
   profilePicture String?  @default("")
   coverPicture   String?  @default("")
 
@@ -29,11 +29,11 @@ model User {
 }
 
 model Tweet {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  description String?
-  img         String?
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  img       String?
 
   likes    Like[]
   comments Comment[]
