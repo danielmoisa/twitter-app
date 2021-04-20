@@ -24,6 +24,7 @@ model User {
   coverPicture   String?  @default("")
 
   tweets    Tweet[]
+  likes     Like[]
   followers Follower[]
   following Following[]
 }
@@ -59,6 +60,8 @@ model Like {
   id      Int    @id @default(autoincrement())
   Tweet   Tweet? @relation(fields: [tweetId], references: [id])
   tweetId Int?
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
 }
 
 model Comment {

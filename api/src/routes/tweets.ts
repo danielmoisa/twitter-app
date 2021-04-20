@@ -3,7 +3,7 @@ import { prisma } from "../index";
 
 const router = express.Router();
 
-// Create a tweet
+// Create a new tweet
 router.post("/", async (req, res) => {
 	try {
 		const tweet = await prisma.tweet.create({
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete tweet
-router.put("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	const { id } = req.params;
 	const { userId } = req.body;
 
@@ -70,40 +70,7 @@ router.put("/:id", async (req, res) => {
 	}
 });
 
-// Like a tweet
-router.post("/:id/like", async (req, res) => {
-	const { tweetId } = req.body;
-	try {
-		// const tweet = await prisma.tweet.findUnique({
-		// 	where: {
-		// 		id: Number(id),
-		// 	},
-		// });
-		// TODO: check if like already exists
-		const tweets = await prisma.tweet.findMany({
-			where: {},
-		});
-
-		console.log(tweets);
-
-		if (tweets.length == 0) {
-			// Create new like and connect with his tweet
-			const like = await prisma.like.create({
-				data: {
-					Tweet: { connect: { id: tweetId } },
-				},
-			});
-			res.status(200).json(like);
-			// TODO: implement dislike
-		} else {
-			res.status(500).json("You already liked this tweet!");
-		}
-	} catch (error) {
-		res.status(500).json(error);
-	}
-});
-
-// Get a tweet
+// Get a single tweet
 router.get("/:id", async (req, res) => {
 	const { id } = req.params;
 	try {
@@ -113,6 +80,36 @@ router.get("/:id", async (req, res) => {
 			},
 		});
 		res.status(200).json(tweet);
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+// Like a tweet
+router.post("/:id/like", async (req, res) => {
+	const { id } = req.params;
+	const { userId } = req.body;
+
+	try {
+		const tweet = await prisma.like.findMany({
+			where: {
+				userId: {
+					equals: userId,
+				},
+			},
+		});
+
+		if (tweet.length > 0) {
+			res.status(500).json("You already liked this tweet!");
+		} else {
+			const like = await prisma.like.create({
+				data: {
+					Tweet: { connect: { id: Number(id) } },
+					User: { connect: { id: Number(userId) } },
+				},
+			});
+			res.status(200).json(like);
+		}
 	} catch (error) {
 		res.status(500).json(error);
 	}
